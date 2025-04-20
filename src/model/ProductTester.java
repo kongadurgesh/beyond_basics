@@ -10,5 +10,6 @@ public class ProductTester {
         for (String product : productList) {
             System.out.println(product);
         }
+        productList.forEach(product -> System.out.println(product));
     }
 }

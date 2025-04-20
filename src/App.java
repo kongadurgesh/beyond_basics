@@ -89,9 +89,45 @@ public class App {
         LambdaThread.testMultiple();
     }
 
+    public static void testPredicate() {
+        Tester.testProducts();
+    }
+
+    public static void testStreams() {
+        Tester.testStreams();
+    }
+
+    public static void testStreams2() {
+        Tester.testStreams2();
+    }
+
+    public static void testParallelStreams() {
+        Tester.testParallelStreams();
+    }
+
+    public static void testStreamEfficiency() {
+        Tester.testStreamTime();
+        Tester.testChatGPT();
+    }
+
     public static void main(String[] args) throws Exception {
-        int test = 14;
+        int test = 19;
         switch (test) {
+            case 19:
+                testStreamEfficiency();
+                break;
+            case 18:
+                testParallelStreams();
+                break;
+            case 17:
+                testStreams2();
+                break;
+            case 16:
+                testStreams();
+                break;
+            case 15:
+                testPredicate();
+                break;
             case 14:
                 testThread();
                 break;
