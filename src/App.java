@@ -110,9 +110,45 @@ public class App {
         Tester.testChatGPT();
     }
 
+    public static void testOptional() {
+        Tester.testOptional();
+    }
+
+    public static void testOptionalObject() {
+        Tester.testOptionalObject();
+    }
+
+    public static void testOptionalStream() {
+        Tester.testOptionalStream();
+    }
+
     public static void main(String[] args) throws Exception {
-        int test = 19;
+        int test = 27;
         switch (test) {
+            case 27:
+                Tester.testThreadGroup();
+                break;
+            case 26:
+                Tester.testMultipleThreads();
+                break;
+            case 25:
+                Tester.testThreadSleep();
+                break;
+            case 24:
+                Tester.testRunnable();
+                break;
+            case 23:
+                Tester.testThread();
+                break;
+            case 22:
+                testOptionalStream();
+                break;
+            case 21:
+                testOptionalObject();
+                break;
+            case 20:
+                testOptional();
+                break;
             case 19:
                 testStreamEfficiency();
                 break;

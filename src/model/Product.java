@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 public class Product {
     private Integer id;
     private String name;
@@ -65,6 +67,10 @@ public class Product {
 
     public void setSeller(String seller) {
         this.seller = seller;
+    }
+
+    public Optional<String> getSellerOptional() {
+        return Optional.ofNullable(seller);
     }
 
 }

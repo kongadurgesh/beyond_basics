@@ -1,8 +1,5 @@
 package utility;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import entity.DemoThread;
 import model.Product;
 import model.Shape;
 
@@ -158,5 +156,128 @@ public class Tester {
         System.out.println("Count of even numbers (parallel): " + evenCountParallel);
         System.out.println("Time taken (parallel): " + timeTakenParallel + " ms");
 
+    }
+
+    public static void testOptional() {
+        String nullString = null;
+        String data = "Hello";
+
+        Optional<String> optionalString = Optional.empty();
+        System.out.println(optionalString);
+
+        Optional<String> optional_1 = Optional.of(data);
+        System.out.println(optional_1);
+
+        Optional<String> optional_2 = Optional.ofNullable(nullString);
+        System.out.println(optional_2);
+        // System.out.println(optional_2.get());
+        if (optional_2.isPresent()) {
+            System.out.println(optional_2.get());
+        } else {
+            System.out.println("Null Value");
+        }
+    }
+
+    public static void testOptionalObject() {
+        Product frock = new Product(1001, "Frock", 5.0, 100);
+
+        if (frock.getSellerOptional().isPresent()) {
+            System.out.println(frock.getSellerOptional().get());
+        } else {
+            System.out.println(frock.getSellerOptional());
+        }
+    }
+
+    public static void testOptionalStream() {
+        Product frock = new Product(1001, "Frock", 5.0, 100);
+        Product watch = new Product(2001, "Watch", 4.9, 600);
+
+        String seller_1 = Optional.ofNullable(frock).flatMap(product -> product.getSellerOptional()).orElse("default");
+
+        System.out.println(seller_1);
+        System.out.println(Optional.ofNullable(watch).map(Product::getPrice));
+
+        System.out.println(Optional.ofNullable(frock)
+                .map(Product::getPrice)
+                .filter(product -> product >= 10)
+                .filter(product -> product <= 1500)
+                .isPresent());
+    }
+
+    public static void testThread() {
+        DemoThread thread_1 = new DemoThread();
+        thread_1.start();
+    }
+
+    public static void testRunnable() {
+        Runnable runnable = () -> {
+            System.out.println("Runnable Thread created");
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public static void testThreadSleep() {
+        new Thread(() -> {
+            System.out.println("Going to Sleep...");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println("After Sleep");
+        }).start();
+    }
+
+    public static void testMultipleThreads() {
+        Runnable runnable_1 = () -> {
+            Thread thread_1 = Thread.currentThread();
+            System.out.println(thread_1.getName() + " Started");
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println(thread_1.getName() + " Ended");
+        };
+        Thread thread_1 = new Thread(runnable_1);
+
+        Runnable runnable_2 = () -> {
+            Thread thread_2 = Thread.currentThread();
+            System.out.println(thread_2.getName() + " Started");
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println(thread_2.getName() + " Ended");
+        };
+        Thread thread_2 = new Thread(runnable_2);
+
+        thread_1.start();
+        try {
+            thread_1.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        thread_2.start();
+    }
+
+    public static void testThreadGroup() {
+        ThreadGroup threadGroup = new ThreadGroup("ThreadGroup");
+        Runnable runnable = () -> {
+            System.out.println("Thread created is: " + Thread.currentThread().getName());
+        };
+        Thread thread_1 = new Thread(threadGroup, runnable, "one");
+        Thread thread_2 = new Thread(threadGroup, runnable, "two");
+        Thread thread_3 = new Thread(threadGroup, runnable, "three");
+        thread_1.start();
+        thread_2.start();
+        thread_3.start();
+
+        System.out.println("Thread group name: " + threadGroup.getName());
+        threadGroup.list();
     }
 }
