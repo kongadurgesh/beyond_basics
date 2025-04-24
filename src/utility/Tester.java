@@ -1,15 +1,22 @@
 package utility;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import entity.DemoSynchronized;
 import entity.DemoThread;
+import entity.Task;
 import model.Product;
 import model.Shape;
 
@@ -279,5 +286,95 @@ public class Tester {
 
         System.out.println("Thread group name: " + threadGroup.getName());
         threadGroup.list();
+    }
+
+    public static void testExecutorService() {
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Runnable runnable_1 = () -> {
+            System.out.println("Running Thread: " + Thread.currentThread().getName());
+        };
+
+        Runnable runnable_2 = () -> {
+            System.out.println("Running Thread: " + Thread.currentThread().getName());
+        };
+
+        service.execute(runnable_1);
+        service.shutdown();
+        service.execute(runnable_2);
+        service.shutdown();
+    }
+
+    public static void testExecutorServiceWithTime() {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        System.out.println("Local Time: " + LocalTime.now());
+        Runnable runnable_1 = () -> {
+            System.out.println("Task 1: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+        Runnable runnable_2 = () -> {
+            System.out.println("Task 2: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+        Runnable runnable_3 = () -> {
+            System.out.println("Task 3: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+
+        executorService.schedule(runnable_1, 5, TimeUnit.SECONDS);
+        executorService.schedule(runnable_2, 10, TimeUnit.SECONDS);
+        executorService.schedule(runnable_3, 15, TimeUnit.SECONDS);
+        executorService.shutdown();
+    }
+
+    public static void testFixedExecutorService() {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        Runnable runnable_1 = () -> {
+            System.out.println("Task 1: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+        Runnable runnable_2 = () -> {
+            System.out.println("Task 2: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+        Runnable runnable_3 = () -> {
+            System.out.println("Task 3: " + Thread.currentThread().getName() + ", Time: " + LocalTime.now());
+        };
+
+        executorService.execute(runnable_1);
+        executorService.execute(runnable_2);
+        executorService.execute(runnable_3);
+
+        executorService.shutdown();
+    }
+
+    public static void testThreadCounter() {
+        Task task = new Task(5);
+        Runnable runnable_1 = () -> {
+            System.out.println(Thread.currentThread().getName() + " After Increment: " + task.incrementCounter());
+        };
+        Runnable runnable_2 = () -> {
+            System.out.println(Thread.currentThread().getName() + " After Increment: " + task.incrementCounter());
+        };
+        Thread thread_1 = new Thread(runnable_1);
+        Thread thread2 = new Thread(runnable_2);
+
+        thread_1.start();
+        thread2.start();
+    }
+
+    public static void testDemoSynchronized() {
+        DemoSynchronized demoSynchronized = new DemoSynchronized();
+
+        Runnable runnable_1 = () -> {
+            synchronized (demoSynchronized) {
+                demoSynchronized.deposit(1000);
+            }
+        };
+        Runnable runnable_2 = () -> {
+            synchronized (demoSynchronized) {
+                demoSynchronized.deposit(1000);
+            }
+        };
+
+        Thread thread_1 = new Thread(runnable_1);
+        Thread thread_2 = new Thread(runnable_2);
+
+        thread_1.start();
+        thread_2.start();
     }
 }

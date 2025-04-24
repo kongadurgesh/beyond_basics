@@ -123,8 +123,23 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-        int test = 27;
+        int test = 32;
         switch (test) {
+            case 32:
+                Tester.testDemoSynchronized();
+                break;
+            case 31:
+                Tester.testThreadCounter();
+                break;
+            case 30:
+                Tester.testFixedExecutorService();
+                break;
+            case 29:
+                Tester.testExecutorServiceWithTime();
+                break;
+            case 28:
+                Tester.testExecutorService();
+                break;
             case 27:
                 Tester.testThreadGroup();
                 break;
