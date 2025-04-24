@@ -13,5 +13,11 @@ public class GamingPhone extends BudgetPhone {
     public void addPhones() {
         ArrayList list = new ArrayList<>();
         list.add("Lenovo KS");
+        list.add("One + nord ");
+        list.add("Mi 10");
+
+        for (Object object : list) {
+            System.out.println(object);
+        }
     }
 }

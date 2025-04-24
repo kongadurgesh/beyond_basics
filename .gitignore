@@ -1,1 +1,5 @@
-*/*.class
+/bin/*/*.class
+/bin/*.class
+*.class
+bin/*.class
+bin/App.class
